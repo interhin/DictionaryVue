@@ -1,19 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Loader v-if="isLoading"/>
+    <DataGrid v-else :allContacts="allContacts"/>
+    <AddContactForm />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import DataGrid from "@/components/DataGrid"
+import AddContactForm from "@/components/AddContactForm"
+import Loader from '@/components/Loader'
+import "bootstrap/dist/css/bootstrap.min.css"
+import "font-awesome/css/font-awesome.css"
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
-  name: 'App',
+  name: "App",
+  computed: {
+    ...mapGetters(["allContacts", "isLoading"])
+  },
+  methods: {
+    ...mapActions(["fetchContacts"])
+  },
+  async mounted() {
+    this.fetchContacts()
+  },
   components: {
-    HelloWorld
+    DataGrid, AddContactForm, Loader
   }
-}
+};
 </script>
 
 <style>
